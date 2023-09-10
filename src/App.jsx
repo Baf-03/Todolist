@@ -74,7 +74,7 @@ function App() {
 
      {/* -----------------------------input field --------------------------------------  */}
       <section className="flex flex-col items-center justify-center gap-2 ">
-        <div className="w-[50%]">
+        <div className="w-[90%] md:w-[60%] lg:w-[40%]">
           <TextField
             id="filled-basic"
             label="Enter Todo"

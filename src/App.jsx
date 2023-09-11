@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 
 import "./App.css";
+import DeleteIcon from '@mui/icons-material/Delete';
+import SendIcon from '@mui/icons-material/Send';
 import Buttons from "./Components/Buttons";
 import { colors } from "@mui/material";
 
@@ -13,13 +15,19 @@ function App() {
 
 //-----------------------------------Add todo---------------------------------------
   const add_todo = () => {
-    let todo_obj = {
-      value: todo_main_input,
-      isEdit: false,
-      isComplete: false,
-    };
-    setuiShow([...uiShow, todo_obj]);
-    set_todo_main_input(""); // Clear input after adding todo
+    if(todo_main_input.length==0){
+      alert("Cannot enter empty todo")
+    }
+    else{
+      let todo_obj = {
+        value: todo_main_input,
+        isEdit: false,
+        isComplete: false,
+      };
+      setuiShow([...uiShow, todo_obj]);
+      set_todo_main_input(""); // Clear input after adding todo
+    }
+    
   };
 
 //-----------------------------------Del all todo---------------------------------------
@@ -61,20 +69,27 @@ function App() {
 
   const save_edited_todo = (index) => {
     uiShow[index].isEdit = false;
+    
     setuiShow([...uiShow]);
-    uiShow[index].value = uishowinput;
+    if(uishowinput.length==0){
+      alert("cannot pass empty string")
+    }
+    else{
+      uiShow[index].value = uishowinput;
     setuiShow([...uiShow]);
+    }
+    
   };
 
 //-----------------------------------ui -------------------------------------------------------------------
   return (
     <>
     {/* ---------------------------------Header------------------------------ */}
-      <div className="text-center">Gareboon ke todo list</div>
+      <div className="text-center font-bold p-5 bg-slate-300">Gareboon ke todo list</div>
 
      {/* -----------------------------input field --------------------------------------  */}
       <section className="flex flex-col items-center justify-center gap-2 ">
-        <div className="w-[90%] md:w-[60%] lg:w-[40%]">
+        <div className="w-[90%] md:w-[60%] lg:w-[40%] mt-5">
           <TextField
             id="filled-basic"
             label="Enter Todo"
@@ -90,7 +105,7 @@ function App() {
      {/* -----------------------------two buttons add del_all code --------------------------------------  */}
         <div className="flex gap-2">
           <Buttons value="Add" trigger={add_todo} />
-          <Buttons value="delete" trigger={delall_todo} />
+          <Buttons value="delete" trigger={delall_todo} colors="error" />
         </div>
 
 
@@ -104,12 +119,21 @@ function App() {
               <div className="flex gap-2  p-4 rounded-lg items-center w-[90%] md:w-[70%] lg:w-[40%] justify-between">
                 {element.value}
               </div>
-              <div>
+              <div className="flex gap-2">
                 <Buttons
                   value="Incomplete"
                   trigger={() => {
                     Completed_todo(index);
                   }}
+                  colors="secondary"
+                />
+                 <Buttons
+                  value="delete"
+                  trigger={() => {
+                    del_element_todo(index);
+                  }}
+                  colors="error"
+                  
                 />
               </div>
             </section>
@@ -137,6 +161,7 @@ function App() {
                   trigger={() => {
                     save_edited_todo(index);
                   }}
+                  colors="success"
                 />
               </div>
             </section>
@@ -160,12 +185,15 @@ function App() {
                   trigger={() => {
                     del_element_todo(index);
                   }}
+                  colors="error"
+                  
                 />
                 <Buttons
                   value="Complete"
                   trigger={() => {
                     Completed_todo(index);
                   }}
+                  colors="secondary"
                 />
               </div>
             </section>
